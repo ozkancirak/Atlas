@@ -7,4 +7,3 @@ actions:
     exeDir: true
     wait: true
     runas: currentUserElevated
-    onUpgrade: true
