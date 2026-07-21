@@ -30,7 +30,8 @@ call setSvc.cmd mrxsmb20 4
 call setSvc.cmd rdbss 3
 call setSvc.cmd srv2 4
 
-DISM /Online /Disable-Feature /FeatureName:"SmbDirect" /NoRestart
+DISM /Online /Get-FeatureInfo /FeatureName:"SmbDirect" > nul 2>&1
+if not errorlevel 1 DISM /Online /Disable-Feature /FeatureName:"SmbDirect" /NoRestart
 if "%~1"=="/silent" exit /b
 
 echo]
