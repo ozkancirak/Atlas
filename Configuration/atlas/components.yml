@@ -51,6 +51,12 @@ actions:
     wait: true
     exeDir: true
   - !powerShell:
+    command: '& ".\AtlasModules\Scripts\ScriptWrappers\SetMsrtAvailability.ps1" -Disabled 1'
+    option: 'defender-disable'
+    wait: true
+    exeDir: true
+    runas: currentUserElevated
+  - !powerShell:
     command: >-
       & """$([Environment]::GetFolderPath('Windows'))\AtlasModules\Scripts\packageInstall.ps1"""
       -InstallPackages @('*Z-Atlas-NoTelemetry-Package*')
@@ -59,3 +65,9 @@ actions:
     option: 'defender-enable'
     wait: true
     exeDir: true
+  - !powerShell:
+    command: '& ".\AtlasModules\Scripts\ScriptWrappers\SetMsrtAvailability.ps1" -Disabled 0'
+    option: 'defender-enable'
+    wait: true
+    exeDir: true
+    runas: currentUserElevated

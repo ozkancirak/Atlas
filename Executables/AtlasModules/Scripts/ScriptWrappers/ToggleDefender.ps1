@@ -22,6 +22,13 @@ if (!(Test-Path $packageInstall)) {
 }
 
 $package = "*Z-Atlas-NoDefender-Package*"
+$msrtAvailability = "$windir\AtlasModules\Scripts\ScriptWrappers\SetMsrtAvailability.ps1"
+
+if (!(Test-Path $msrtAvailability)) {
+    Write-Host "Missing MSRT configuration script, can't continue."
+    if (!$args) { Read-Pause }
+    exit 1
+}
 
 try {
 	$packages = (Get-WindowsPackage -online | Where-Object { $_.PackageName -like "*NoDefender*" }).PackageName
@@ -68,6 +75,8 @@ function Menu {
 			Write-Host "Disabling Windows Defender... This will take a moment." -ForegroundColor Yellow
 
 			& $packageInstall -InstallPackages @($package)
+			if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+			& $msrtAvailability -Disabled 1
 			exit $LASTEXITCODE
 		}
 
@@ -82,6 +91,8 @@ function Menu {
 			Write-Host "Enabling Windows Defender... This will take a moment." -ForegroundColor Yellow
 
 			& $packageInstall -UninstallPackages @($package)
+			if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+			& $msrtAvailability -Disabled 0
 			exit $LASTEXITCODE
 		}
 
