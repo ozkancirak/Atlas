@@ -48,6 +48,7 @@ actions:
   - !writeStatus: {status: 'Running performance tweaks'}
   - !task: {path: 'tweaks\performance\config-mmcss.yml'}
   - !task: {path: 'tweaks\performance\enable-game-mode.yml'}
+  - !task: {path: 'tweaks\performance\enable-windowed-game-optimizations.yml'}
   - !task: {path: 'tweaks\performance\disable-auto-folder-discovery.yml'}
   # - !task: {path: 'tweaks\performance\disable-game-bar.yml'}
   - !task: {path: 'tweaks\performance\config-automatic-maintenance.yml'}

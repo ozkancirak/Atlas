@@ -1,0 +1,10 @@
+---
+title: Enable Optimizations for Windowed Games
+description: Enables flip-model optimizations for supported windowed and borderless DirectX 10 and DirectX 11 games.
+actions:
+  - !powerShell:
+    command: '& ".\AtlasModules\Scripts\ScriptWrappers\SetWindowedGameOptimizations.ps1" -Enabled 1 -IncludeDefaultUser'
+    exeDir: true
+    wait: true
+    runas: currentUserElevated
+    onUpgrade: true
