@@ -1,0 +1,14 @@
+---
+title: Enable Game Mode
+description: Enables Windows Game Mode for the current user and new user profiles.
+actions:
+  - !registryValue:
+    path: 'HKCU\Software\Microsoft\GameBar'
+    value: 'AutoGameModeEnabled'
+    data: 1
+    type: REG_DWORD
+  - !registryValue:
+    path: 'HKU\AME_UserHive_Default\Software\Microsoft\GameBar'
+    value: 'AutoGameModeEnabled'
+    data: 1
+    type: REG_DWORD
