@@ -1,8 +1,12 @@
 @echo off
-pushd "%~dp0"
+setlocal
+pushd "%~dp0" || exit /b 1
 echo Building Playbook...
-powershell -nop -ep bypass ^& "%cd%\..\dependencies\local-build.ps1" -AddLiveLog -ReplaceOldPlaybook -Removals WinverRequirement, Verification -DontOpenPbLocation
-if %errorlevel% neq 0 (
+set "ATLAS_BUILD_SCRIPT=%~dp0dependencies\local-build.ps1"
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "& $env:ATLAS_BUILD_SCRIPT -AddLiveLog -ReplaceOldPlaybook -Removals @('WinverRequirement','Verification') -DontOpenPbLocation"
+set "buildExit=%errorlevel%"
+if not "%buildExit%"=="0" (
     if "%*"=="" pause
 )
 popd
+exit /b %buildExit%
