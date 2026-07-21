@@ -14,7 +14,7 @@ actions:
     value: 'PeriodInNanoSeconds'
     operation: delete
   - !registryValue:
-    path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection'
+    path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection'
     value: 'DoNotShowFeedbackNotifications'
     data: '1'
     type: REG_DWORD
