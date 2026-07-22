@@ -25,9 +25,14 @@ function Set-TimeServers {
 
 # Rebuild Performance Counters
 function Reset-PerformanceCounters {
-    lodctr /r
-    lodctr /r
+    & "$env:SystemRoot\System32\lodctr.exe" /R
+    if ($LASTEXITCODE -ne 0) { throw "64-bit lodctr failed with exit code $LASTEXITCODE" }
+
+    & "$env:SystemRoot\SysWOW64\lodctr.exe" /R
+    if ($LASTEXITCODE -ne 0) { throw "32-bit lodctr failed with exit code $LASTEXITCODE" }
+
     winmgmt /resyncperf
+    if ($LASTEXITCODE -ne 0) { throw "winmgmt resync failed with exit code $LASTEXITCODE" }
 }
 
 function Invoke-AllMiscSystemUtilities {
