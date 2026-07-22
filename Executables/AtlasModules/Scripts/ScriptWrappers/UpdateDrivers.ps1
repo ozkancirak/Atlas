@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param (
-    [switch]$RestartAfterUpdate
+    [switch]$RestartAfterUpdate,
+    [switch]$Silent
 )
 
 $script:SelectedUpdates = @()
