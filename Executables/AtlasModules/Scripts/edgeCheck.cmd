@@ -19,7 +19,7 @@ if "%~1" neq "/silent" (
     echo Microsoft Edge is required to use this script.
     if %___edge%==0 echo In the future, if you no longer want to use this feature, you can use the disable script and uninstall Edge.
     choice /c:yn /n /m "Would you like to install Edge? [Y/N] "
-    if %errorlevel%==2 (
+    if errorlevel 2 (
         echo]
         echo Press any key to exit...
         pause > nul
