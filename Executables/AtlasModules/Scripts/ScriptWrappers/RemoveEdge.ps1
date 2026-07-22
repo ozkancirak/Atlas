@@ -212,7 +212,7 @@ Error: $_" -Level Critical -Exit -ExitCode 5
     try {
         if ($null -eq (Get-Command curl.exe -EA 0)) {
             Write-Status "Couldn't find cURL, using Invoke-WebRequest, which is slower..." -Level Warning
-            Invoke-WebRequest -Uri $link -Output $msi -UseBasicParsing
+            Invoke-WebRequest -Uri $link -OutFile $msi -UseBasicParsing -ErrorAction Stop
         }
         else {
             curl.exe -#L "$link" -o "$msi"
@@ -233,7 +233,7 @@ Error: $_" -Level Critical -Exit -ExitCode 6
             Write-Status 'Verified the Microsoft Edge installer!' -Level Success
         }
         else {
-            Write-Status 'Edge installer hash does not match. The installer might be corrupted. Continuing anyways...' -Level Error
+            Write-Status 'Edge installer hash does not match. The installer may be corrupted.' -Level Critical -Exit -ExitCode 10
         }
     }
 
@@ -265,7 +265,7 @@ function InstallWebView {
     try {
         if ($null -eq (Get-Command curl.exe -EA 0)) {
             Write-Status "Couldn't find cURL, using Invoke-WebRequest, which is slower..." -Level Warning
-            Invoke-WebRequest -Uri $link -Output $dlPath -UseBasicParsing
+            Invoke-WebRequest -Uri $link -OutFile $dlPath -UseBasicParsing -ErrorAction Stop
         }
         else {
             curl.exe -Ls "$link" -o "$dlPath"
