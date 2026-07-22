@@ -54,31 +54,36 @@ if ($ids.Count -le 0) {
 
 # Extract ViVeTool https://github.com/thebookisclosed/ViVe
 # Not done in PowerShell as it's too complicated, it's just easiest to use the actual tool
-$viveZip = Get-ChildItem "ViVeTool-*.zip" -Name
-if ($arm) {
-    $viveZip = $viveZip | Where-Object { $_ -match '-ARM64CLR' }
+$viveZip = if ($arm) {
+    'ViVeTool-v0.3.4-SnapdragonArm64.zip'
 } else {
-    $viveZip = $viveZip | Where-Object { $_ -notmatch '-ARM64CLR' }
+    'ViVeTool-v0.3.4-IntelAmd.zip'
 }
 
 # Extract & setup ViVeTool
-if ($viveZip) {
+if (Test-Path -LiteralPath $viveZip -PathType Leaf) {
     $viveFolder = Join-Path -Path (Get-Location) -ChildPath "vivetool"
     if (!(Test-Path -Path $viveFolder)) {
         New-Item -ItemType Directory -Path $viveFolder | Out-Null
     }
-    Expand-Archive -Path $viveZip -DestinationPath $viveFolder -Force
+    Expand-Archive -LiteralPath $viveZip -DestinationPath $viveFolder -Force
 } else {
-    throw "ViVeTool not found!"
+    throw "ViVeTool package '$viveZip' was not found."
 }
-$env:PATH += ";$viveFolder"
-if (!(Get-Command 'vivetool' -EA 0)) {
-    throw "ViVeTool EXE not found in ZIP!"
+
+$viveExecutable = Join-Path $viveFolder 'ViVeTool.exe'
+foreach ($requiredFile in @('ViVeTool.exe', 'Albacore.ViVe.dll', 'Newtonsoft.Json.dll', 'FeatureDictionary.pfs')) {
+    if (!(Test-Path -LiteralPath (Join-Path $viveFolder $requiredFile) -PathType Leaf)) {
+        throw "Required ViVeTool file '$requiredFile' was not found in '$viveZip'."
+    }
 }
 
 # Disable feature IDs
 # Applies next reboot
 foreach ($id in $($ids | Sort-Object -Unique)) {
     Write-Output "Disabling feature ID $id..."
-    ViVeTool.exe /disable /id:$id | Out-Null
+    & $viveExecutable /disable /id:$id | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        throw "ViVeTool failed to disable feature ID $id (exit code $LASTEXITCODE)."
+    }
 }
