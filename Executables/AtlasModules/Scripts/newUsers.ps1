@@ -43,12 +43,19 @@ Set-LockscreenImage
 & "$atlasDesktop\4. Interface Tweaks\Visual Effects (Animations)\Atlas Visual Effects (default).cmd" /silent
 
 # Set taskbar pins 
-$valueName = "Browser"
-$value = Get-ItemProperty -Path "HKLM:\SOFTWARE\AtlasOS\SetupOptions" -Name $valueName -ErrorAction Stop
-$Browser = $value.$valueName
-$Browser
+$browser = $null
+try {
+    $browser = Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\AtlasOS\SetupOptions' -Name 'Browser' -ErrorAction Stop
+}
+catch {
+    Write-Warning 'No saved browser selection was found; using the taskbar fallback.'
+}
 
-& "$atlasModules\Scripts\taskbarPins.ps1" $Browser
+if ([string]::IsNullOrWhiteSpace([string]$browser)) {
+    $browser = $null
+}
+
+& "$atlasModules\Scripts\taskbarPins.ps1" -Browser $browser
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Value 1
 
 # Leave
