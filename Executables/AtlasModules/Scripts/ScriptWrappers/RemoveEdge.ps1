@@ -381,8 +381,7 @@ if ($UninstallEdge) {
         Write-Status 'Successfully removed Microsoft Edge.' -Level Success
     }
     catch {
-        Write-Warning "An error occurred: $_"
-        return $false
+        Write-Status "Microsoft Edge removal failed:`n$_" -Level Critical -Exit -ExitCode 11
     }
     Write-Output ""
 }
