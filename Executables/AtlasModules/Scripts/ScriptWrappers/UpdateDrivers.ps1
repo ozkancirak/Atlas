@@ -96,7 +96,14 @@ function Update-Drivers {
         if ($selection.Count -gt 0) {
             Write-Host "Installing selected driver updates..."
             $selection | Format-Table ComputerName, Status, KB, Size, Title -AutoSize
-            $selection | Get-WUInstall -AcceptAll -IgnoreReboot -Confirm:$false | Out-Null
+
+            $updateIds = @($selection | ForEach-Object { $_.Identity.UpdateID } | Where-Object { $_ })
+            if ($updateIds.Count -ne $selection.Count) {
+                Write-Error "Could not resolve the UpdateID of every selected driver update; aborting instead of installing unselected updates."
+                return $false
+            }
+
+            Get-WUInstall -MicrosoftUpdate -Category "Drivers" -UpdateID $updateIds -AcceptAll -IgnoreReboot -Confirm:$false -ErrorAction Stop | Out-Null
             Write-Host "Driver updates installed successfully!"
 
             $restartChoice = Read-Host "Do you want to restart now? (Y/N)"
