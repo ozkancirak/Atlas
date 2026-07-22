@@ -6,12 +6,12 @@ $networkDiscoveryConfigPath = "$([Environment]::GetFolderPath('Windows'))\AtlasD
 Enable-NetAdapterBinding -Name "*" -ComponentID ms_msclient, ms_server, ms_lltdio, ms_rspndr | Out-Null
 
 # Enable Network Discovery services and its dependencies
-Start-Process -FilePath "$networkDiscoveryConfigPath\Enable Network Discovery Services (default).cmd" -ArgumentList "/silent" -WindowStyle Hidden
+& "$networkDiscoveryConfigPath\Enable Network Discovery Services (default).cmd" /silent | Out-Null
 
 # Enable NetBios over TCP/IP
 $interfaces = Get-ChildItem "HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters\Interfaces" -Recurse | Where-Object { $_.GetValue("NetbiosOptions") -ne $null }
 foreach ($interface in $interfaces) {
-    Set-ItemProperty -Path $interface.PSPath -Name "NetbiosOptions" -Value 2 | Out-Null
+    Set-ItemProperty -Path $interface.PSPath -Name "NetbiosOptions" -Value 1 | Out-Null
 }
 
 # Enable NetBIOS service
