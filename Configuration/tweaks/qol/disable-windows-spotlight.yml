@@ -35,10 +35,26 @@ actions:
     value: 'DisableThirdPartySuggestions'
     data: '1'
     type: REG_DWORD
+
+  - !registryValue:
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager'
+    value: 'RotatingLockScreenEnabled'
+    data: '0'
+    type: REG_DWORD
+    onUpgrade: false
+
+  - !powerShell:
+    command: |
+      foreach ($userKey in (Get-ChildItem "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Creative").PsPath) {
+          Set-ItemProperty -Path $userKey -Name 'RotatingLockScreenEnabled' -Type DWORD -Value 0 -Force
+      }
+    exeDir: true
+    wait: true
+    onUpgrade: false
     
     
   - !registryValue:
-    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanelt'
+    path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel'
     value: '{2cc5ca98-6485-489a-920e-b3e88a6ccce3}'
     data: '1'
     type: REG_DWORD
