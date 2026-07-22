@@ -272,7 +272,7 @@ $InstallButton.Text = "Install"
 $InstallButton.Add_Click({
     $checkedBoxes = $Form.Controls | Where-Object { $_ -is [System.Windows.Forms.Checkbox] -and $_.Checked }
     if ($checkedBoxes.Count -eq 0) {
-        Read-MessageBox -Title "No package selected" -Body 'Please select at least one software package to install' -Icon Information -Buttons Ok | Out-Null
+        Read-MessageBox -Title "No package selected" -Body 'Please select at least one software package to install' -Icon Info -Buttons Ok | Out-Null
     }
     else {
         $global:install = $true
