@@ -1,6 +1,6 @@
 ---
 title: Configure Crash Control
-description: Configures the BSoD for having the most useful information and not leaving behind dumps (which most people will not look into anyways)
+description: Configures the BSoD to show useful information while retaining only a small minidump and the System event-log record for diagnostics
 actions:
   - !registryValue:
     path: 'HKLM\SYSTEM\CurrentControlSet\Control\CrashControl'
@@ -10,12 +10,12 @@ actions:
   - !registryValue:
     path: 'HKLM\SYSTEM\CurrentControlSet\Control\CrashControl'
     value: 'CrashDumpEnabled'
-    data: '0'
+    data: '3' # Small memory dump; full memory dumps remain disabled
     type: REG_DWORD
   - !registryValue:
     path: 'HKLM\SYSTEM\CurrentControlSet\Control\CrashControl'
     value: 'LogEvent'
-    data: '0'
+    data: '1' # Preserve the bugcheck record in the System event log
     type: REG_DWORD
   - !registryValue:
     path: 'HKLM\SYSTEM\CurrentControlSet\Control\CrashControl'
