@@ -127,17 +127,34 @@ function EdgeInstalled {
 }
 
 function KillEdgeProcesses {
+    $previousErrorActionPreference = $ErrorActionPreference
     $ErrorActionPreference = 'SilentlyContinue'
     foreach ($service in (Get-Service -Name '*edge*' | Where-Object { $_.DisplayName -like '*Microsoft Edge*' }).Name) {
         Stop-Service -Name $service -Force
     }
+
+    $edgePathPatterns = @()
+    foreach ($programFiles in @([Environment]::GetFolderPath('ProgramFilesX86'), [Environment]::GetFolderPath('ProgramFiles'))) {
+        foreach ($edgeComponent in @('Edge', 'EdgeUpdate', 'EdgeCore')) {
+            $edgePathPatterns += "$programFiles\Microsoft\$edgeComponent\*"
+        }
+    }
+
     foreach (
         $process in
-        (Get-Process | Where-Object { ($_.Path -like "$([Environment]::GetFolderPath('ProgramFilesX86'))\Microsoft\*") -or ($_.Name -like '*msedge*') }).Id
+        (Get-Process | Where-Object {
+            $currentProcess = $_
+            $processPath = $currentProcess.Path
+            $isWebView = ($currentProcess.Name -eq 'msedgewebview2') -or ($processPath -like '*\Microsoft\EdgeWebView\*')
+            (-not $isWebView) -and (
+                (@($edgePathPatterns | Where-Object { $processPath -like $_ }).Count -gt 0) -or
+                ($currentProcess.Name -match '^(msedge|MicrosoftEdge|edgeupdate)')
+            )
+        }).Id
     ) {
         Stop-Process -Id $process -Force
     }
-    $ErrorActionPreference = 'Continue'
+    $ErrorActionPreference = $previousErrorActionPreference
 }
 
 function InstallEdgeChromium {
