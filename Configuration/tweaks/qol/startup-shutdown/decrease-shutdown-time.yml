@@ -14,10 +14,5 @@ actions:
     value: 'WaitToKillAppTimeOut'
     data: '2000'
     type: REG_SZ
-    
-    
-  - !registryValue:
-    path: 'HKLM\SYSTEM\CurrentControlSet\Control'
-    value: 'WaitToKillServiceTimeout'
-    data: '2000'
-    type: REG_SZ
+
+    # Keep WaitToKillServiceTimeout at the Windows default so services can finish shutdown work.

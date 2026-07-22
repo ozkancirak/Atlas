@@ -232,7 +232,7 @@ function Show-MorePinsInStartMenu {
 function Set-ShutdownTime {
     reg add "HKCU\Control Panel\Desktop" /v "HungAppTimeout" /t REG_SZ /d "2000" /f
     reg add "HKCU\Control Panel\Desktop" /v "WaitToKillAppTimeOut" /t REG_SZ /d "2000" /f
-    reg add "HKLM\SYSTEM\CurrentControlSet\Control" /v "WaitToKillServiceTimeout" /t REG_SZ /d "2000" /f
+    # Keep WaitToKillServiceTimeout at the Windows default so services can finish shutdown work.
 }
 
 # Function to disable startup delay
