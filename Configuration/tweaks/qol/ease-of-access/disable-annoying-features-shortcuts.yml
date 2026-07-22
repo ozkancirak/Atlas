@@ -5,35 +5,35 @@ actions:
   - !registryValue:
     path: 'HKCU\Control Panel\Accessibility\HighContrast'
     value: 'Flags'
-    data: '0'
+    data: '4194'
     type: REG_SZ
     
     
   - !registryValue:
     path: 'HKCU\Control Panel\Accessibility\Keyboard Response'
     value: 'Flags'
-    data: '0'
+    data: '122'
     type: REG_SZ
     
     
   - !registryValue:
     path: 'HKCU\Control Panel\Accessibility\MouseKeys'
     value: 'Flags'
-    data: '0'
+    data: '186'
     type: REG_SZ
     
     
   - !registryValue:
     path: 'HKCU\Control Panel\Accessibility\StickyKeys'
     value: 'Flags'
-    data: '0'
+    data: '506'
     type: REG_SZ
     
     
   - !registryValue:
     path: 'HKCU\Control Panel\Accessibility\ToggleKeys'
     value: 'Flags'
-    data: '0'
+    data: '58'
     type: REG_SZ
     
     
