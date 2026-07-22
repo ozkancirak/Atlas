@@ -379,7 +379,6 @@ if ($UninstallEdge) {
         }
 
         Write-Status 'Successfully removed Microsoft Edge.' -Level Success
-        exit
     }
     catch {
         Write-Warning "An error occurred: $_"
