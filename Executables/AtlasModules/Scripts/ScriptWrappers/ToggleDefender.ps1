@@ -74,9 +74,14 @@ function Menu {
 			Clear-Host
 			Write-Host "Disabling Windows Defender... This will take a moment." -ForegroundColor Yellow
 
+			try {
+				& $msrtAvailability -Disabled 1
+			} catch {
+				Write-Error "Failed to disable MSRT: $_"
+				exit 1
+			}
+
 			& $packageInstall -InstallPackages @($package)
-			if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-			& $msrtAvailability -Disabled 1
 			exit $LASTEXITCODE
 		}
 
@@ -90,9 +95,14 @@ function Menu {
 			Clear-Host
 			Write-Host "Enabling Windows Defender... This will take a moment." -ForegroundColor Yellow
 
+			try {
+				& $msrtAvailability -Disabled 0
+			} catch {
+				Write-Error "Failed to enable MSRT: $_"
+				exit 1
+			}
+
 			& $packageInstall -UninstallPackages @($package)
-			if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-			& $msrtAvailability -Disabled 0
 			exit $LASTEXITCODE
 		}
 
