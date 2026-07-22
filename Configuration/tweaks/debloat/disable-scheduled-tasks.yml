@@ -17,6 +17,9 @@ actions:
 
     # A/B testing usage reports
   - !scheduledTask: {path: '\Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting', operation: disable, ignoreErrors: true}
+
+    # SQM/CEIP proxy that stays Ready after the other CEIP tasks are disabled
+  - !scheduledTask: {path: '\Microsoft\Windows\Autochk\Proxy', operation: disable, ignoreErrors: true}
   - !registryValue:
     path: 'HKLM\System\CurrentControlSet\Control\Ubpm'
     value: 'CriticalMaintenance_UsageDataReporting' # Remove from automatic maintenance
