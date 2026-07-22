@@ -52,5 +52,6 @@ echo You need the latest version of WinGet to use this script.
 echo WinGet is included with 'App Installer' on the Microsoft Store, it's also on GitHub.
 echo]
 choice /c:yn /n /m "Would you like to open the Microsoft Store to %action% it? [Y/N] "
-if errorlevel == 1 start %uri%
+if errorlevel 2 exit /b 2
+if errorlevel 1 start "" "%uri%"
 exit /b 2
