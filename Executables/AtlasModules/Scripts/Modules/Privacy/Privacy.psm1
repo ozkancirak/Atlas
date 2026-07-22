@@ -28,7 +28,7 @@ function Disable-DeviceSetupSuggestions {
 
 # Disables .NET CLI Telemetry
 function Disable-NETCLITelemetry {
-    setx DOTNET_CLI_TELEMETRY_OPTOUT 1
+    setx DOTNET_CLI_TELEMETRY_OPTOUT 1 /M
 }
 
 # Disables Input Telemetry (text, handwriting, and ink)
